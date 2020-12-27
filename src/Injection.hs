@@ -32,6 +32,11 @@ The name of the class is derived from the mathematical term.
 @Injection@ models the "is-a" relationship used in languages with subtypes (such as in object-oriented programming),
 but an explicit cast with @inject@ is required in Haskell.
 
+Although it is often possible to infer the type parameters of this class,
+it is advisable to specify one or both of the parameters to @inject@
+using a type signature or the @TypeApplications@ language extension.
+Specifying the type parameters will give clearer error messages from the type checker in any case.
+
 -}
 class Injection from into where
     inject :: from -> into
@@ -50,6 +55,12 @@ is the (left) inverse of 'inject':
 'retract' is partial (returns 'Maybe') because the type @into@ may be larger than the type @from@;
 that is, there may be values in @into@ which are not 'inject'-ed from @from@,
 and in that case @retract@ may return 'Nothing'.
+
+Although it is often possible to infer the type parameters of this class,
+it is advisable to specify one or both of the parameters to @retract@
+using a type signature or the @TypeApplications@ language extension.
+Specifying the type parameters will give clearer error messages from the type checker in any case.
+
 -}
 class Injection from into => Retraction from into where
     retract :: into -> Maybe from
