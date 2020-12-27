@@ -88,3 +88,48 @@ Data.Map.fromList [('a', 'A'), ('b', 'B')] == Data.Map.fromList [('b', 'B'), ('a
 ```
 
 Therefore, we cannot define an `instance [(k, v)] (Map k v)`.
+
+## Retraction
+
+Because `Injection` is a lossless conversion, we can define a `Retraction` which undoes it.
+The method
+
+```.hs
+retract :: into -> Maybe from
+```
+
+is the (left) inverse of `inject`:
+
+```.hs
+retract (inject x) = Just x
+```
+
+`retract` is partial (returns `Maybe`) because the type `into` may be larger than the type `from`;
+that is, there may be values in `into` which are not `inject`-ed from `from`,
+and in that case `retract` may return `Nothing`.
+
+### Examples
+
+```.hs
+instance Typeable a => Retraction a Dynamic where
+    retract = fromDyn
+```
+
+```.hs
+instance Retraction a (Maybe a) where
+    retract = id
+```
+
+```.hs
+instance Retraction (Maybe a) [a] where
+    retract [] = Just Nothing
+    retract [x] = Just (Just x)
+    retract _ = Nothing
+```
+
+```.hs
+instance Retraction Natural Integer where
+    retract x
+        | x < 0 = Nothing
+        | otherwise = Just (fromInteger x)
+```
