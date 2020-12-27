@@ -54,6 +54,14 @@ and in that case @retract@ may return 'Nothing'.
 class Injection from into => Retraction from into where
     retract :: into -> Maybe from
 
+instance {-# OVERLAPPABLE #-} Injection a a where
+    inject = id
+    {-# INLINE inject #-}
+
+instance {-# OVERLAPPABLE #-} Retraction a a where
+    retract = Just
+    {-# INLINE retract #-}
+
 instance Typeable a => Injection a Dynamic where
     inject = toDyn
     {-# INLINE inject #-}
@@ -62,21 +70,21 @@ instance Typeable a => Retraction a Dynamic where
     retract = fromDynamic
     {-# INLINE retract #-}
 
-instance Injection a (Maybe a) where
-    inject = Just
+instance Injection a b => Injection a (Maybe b) where
+    inject = Just . inject
     {-# INLINE inject #-}
 
-instance Retraction a (Maybe a) where
-    retract = id
+instance Retraction a b => Retraction a (Maybe b) where
+    retract = \x -> x >>= retract @a @b
     {-# INLINE retract #-}
 
-instance Injection (Maybe a) [a] where
-    inject = maybeToList
+instance Injection a b => Injection (Maybe a) [b] where
+    inject = maybeToList . fmap (inject @a @b)
     {-# INLINE inject #-}
 
-instance Retraction (Maybe a) [a] where
+instance Retraction a b => Retraction (Maybe a) [b] where
     retract [] = Just Nothing
-    retract [x] = Just (Just x)
+    retract [b] = Just <$> retract @a @b b
     retract _ = Nothing
 
 instance Injection Natural Integer where

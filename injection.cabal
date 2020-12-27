@@ -52,6 +52,8 @@ common common-options
     -- Required for implementation only:
     EmptyCase
     LambdaCase
+    ScopedTypeVariables
+    TypeApplications
 
 library
   import:              common-options
@@ -71,4 +73,3 @@ test-suite injection-test
                        -with-rtsopts=-N
   default-extensions:
     DerivingStrategies
-    TypeApplications
