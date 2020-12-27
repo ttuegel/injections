@@ -79,3 +79,12 @@ Likewise, there is a canonical injection from the natural numbers (non-negative 
 instance Injection Natural Integer where
     inject = toInteger
 ```
+
+Some common conversions are notably _not_ injective.
+For example, `Data.Map.fromList` returns the same `Map` for different lists:
+
+```.hs
+Data.Map.fromList [('a', 'A'), ('b', 'B')] == Data.Map.fromList [('b', 'B'), ('a', 'A')]
+```
+
+Therefore, we cannot define an `instance [(k, v)] (Map k v)`.
