@@ -32,6 +32,9 @@ but an explicit cast with `inject` is required in Haskell.
 
 There are many examples of injections scattered throughout Haskell,
 but the `Injection` class collects them in one place.
+Here we present some examples.
+Some of these instances have been generalized in the library,
+but we present the simplified version here for explanatory purposes.
 
 `Dynamic` is a dynamically-typed wrapper for values of all `Typeable` types.
 Wrapping a value with `toDyn` preserves the value exactly, so we know that it is injective:
