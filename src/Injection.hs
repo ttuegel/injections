@@ -12,6 +12,7 @@ module Injection
 
 import Data.Dynamic (Dynamic, Typeable, fromDynamic, toDyn)
 import Data.Maybe (maybeToList)
+import Data.String (IsString (fromString))
 import Data.Void (Void)
 import Numeric.Natural (Natural)
 
@@ -110,4 +111,8 @@ instance Retraction Natural Integer where
 
 instance Injection Void any where
     inject = \case {}
+    {-# INLINE inject #-}
+
+instance IsString str => Injection String str where
+    inject = fromString
     {-# INLINE inject #-}

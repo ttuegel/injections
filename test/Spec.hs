@@ -5,6 +5,7 @@ module Main (main) where
 import Injection
 
 import Data.Dynamic (Dynamic)
+import Data.Text (Text)
 import Numeric.Natural (Natural)
 import Test.Hspec
 import Test.QuickCheck
@@ -36,6 +37,8 @@ main = hspec $ do
             retract @Natural @Integer 1 `shouldBe` Just 1
         it "is not defined over negative integers" $ do
             retract @Natural @Integer (-1) `shouldBe` Nothing
+    describe "inject @String @Text" $ do
+        it "is injective" (lawInjective @String @Text)
 
 lawInjective
     :: forall from into
