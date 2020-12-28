@@ -63,7 +63,12 @@ main = hspec $ do
     describe "instance Injection Lazy.Text String" $ do
         it "is resolvable" (resolveInjection @Lazy.Text @String)
         it "is injective" (lawInjective @Lazy.Text @String)
-
+    describe "instance Injection Text Lazy.Text" $ do
+        it "is resolvable" (resolveInjection @Text @Lazy.Text)
+        it "is injective" (lawInjective @Text @Lazy.Text)
+    describe "instance Injection Lazy.Text Text" $ do
+        it "is resolvable" (resolveInjection @Lazy.Text @Text)
+        it "is injective" (lawInjective @Lazy.Text @Text)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()

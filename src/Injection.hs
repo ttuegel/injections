@@ -131,3 +131,11 @@ instance Injection String Lazy.Text where
 instance Injection Lazy.Text String where
     inject = Text.Lazy.unpack
     {-# INLINE inject #-}
+
+instance Injection Text Lazy.Text where
+    inject = Text.Lazy.fromStrict
+    {-# INLINE inject #-}
+
+instance Injection Lazy.Text Text where
+    inject = Text.Lazy.toStrict
+    {-# INLINE inject #-}
