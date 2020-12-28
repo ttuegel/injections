@@ -12,8 +12,10 @@ module Injection
 
 import Data.Dynamic (Dynamic, Typeable, fromDynamic, toDyn)
 import Data.Maybe (maybeToList)
-import Data.String (IsString (fromString))
 import Data.Text (Text)
+import qualified Data.Text as Text
+import qualified Data.Text.Lazy as Lazy (Text)
+import qualified Data.Text.Lazy as Text.Lazy
 import Data.Void (Void)
 import Numeric.Natural (Natural)
 
@@ -115,9 +117,17 @@ instance Injection Void any where
     {-# INLINE inject #-}
 
 instance Injection String Text where
-    inject = fromString
+    inject = Text.pack
+    {-# INLINE inject #-}
+
+instance Injection Text String where
+    inject = Text.unpack
     {-# INLINE inject #-}
 
 instance Injection String Lazy.Text where
-    inject = fromString
+    inject = Text.Lazy.pack
+    {-# INLINE inject #-}
+
+instance Injection Lazy.Text String where
+    inject = Text.Lazy.unpack
     {-# INLINE inject #-}
