@@ -117,3 +117,7 @@ instance Injection Void any where
 instance Injection String Text where
     inject = fromString
     {-# INLINE inject #-}
+
+instance Injection String Lazy.Text where
+    inject = fromString
+    {-# INLINE inject #-}

@@ -6,6 +6,7 @@ import Injection
 
 import Data.Dynamic (Dynamic)
 import Data.Text (Text)
+import qualified Data.Text.Lazy as Lazy (Text)
 import Numeric.Natural (Natural)
 import Test.Hspec
 import Test.QuickCheck
@@ -17,6 +18,10 @@ main = hspec $ do
         it "is resolvable" (resolveInjection @Integer @Integer)
     describe "instance Injection String String" $ do
         it "is resolvable" (resolveInjection @String @String)
+    describe "instance Injection Text Text" $ do
+        it "is resolvable" (resolveInjection @Text @Text)
+    describe "instance Injection Lazy.Text Lazy.Text" $ do
+        it "is resolvable" (resolveInjection @Lazy.Text @Lazy.Text)
     describe "instance Retraction Integer Dynamic" $ do
         it "is resolvable" (resolveRetraction @Integer @Dynamic)
         it "is the left inverse of inject" (lawLeftInverse @Integer @Dynamic)
@@ -49,6 +54,9 @@ main = hspec $ do
     describe "instance Injection String Text" $ do
         it "is resolvable" (resolveInjection @String @Text)
         it "is injective" (lawInjective @String @Text)
+    describe "instance Injection String Lazy.Text" $ do
+        it "is resolvable" (resolveInjection @String @Lazy.Text)
+        it "is injective" (lawInjective @String @Lazy.Text)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()
