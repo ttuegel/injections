@@ -6,6 +6,7 @@ import Injection
 
 import Data.Dynamic (Dynamic)
 import Data.Fixed (Fixed, E6)
+import Data.Functor.Const (Const)
 import Data.Text (Text)
 import qualified Data.Text.Lazy as Lazy (Text)
 import Numeric.Natural (Natural)
@@ -73,6 +74,12 @@ main = hspec $ do
     describe "instance Injection Integer (Fixed a)" $ do
         it "is resolvable" (resolveInjection @Integer @(Fixed E6))
         it "is injective" (lawInjective @Integer @(Fixed E6))
+    describe "instance Injection Integer (Const Integer String)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Const Integer String))
+        it "is injective" (lawInjective @Integer @(Const Integer String))
+    describe "instance Injection (Const Integer String) Integer" $ do
+        it "is resolvable" (resolveInjection @(Const Integer String) @Integer)
+        it "is injective" (lawInjective @(Const Integer String) @Integer)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()

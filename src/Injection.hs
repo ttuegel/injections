@@ -12,6 +12,7 @@ module Injection
 
 import Data.Dynamic (Dynamic, Typeable, fromDynamic, toDyn)
 import Data.Fixed (Fixed, HasResolution)
+import Data.Functor.Const (Const (..))
 import Data.Maybe (maybeToList)
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -143,4 +144,12 @@ instance Injection Lazy.Text Text where
 
 instance HasResolution a => Injection Integer (Fixed a) where
     inject = fromInteger
+    {-# INLINE inject #-}
+
+instance Injection a (Const a b) where
+    inject = Const
+    {-# INLINE inject #-}
+
+instance Injection (Const a b) a where
+    inject = getConst
     {-# INLINE inject #-}
