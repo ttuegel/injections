@@ -11,6 +11,7 @@ module Injection
     ) where
 
 import Data.Dynamic (Dynamic, Typeable, fromDynamic, toDyn)
+import Data.Fixed (Fixed, HasResolution)
 import Data.Maybe (maybeToList)
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -138,4 +139,8 @@ instance Injection Text Lazy.Text where
 
 instance Injection Lazy.Text Text where
     inject = Text.Lazy.toStrict
+    {-# INLINE inject #-}
+
+instance HasResolution a => Injection Integer (Fixed a) where
+    inject = fromInteger
     {-# INLINE inject #-}

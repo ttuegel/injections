@@ -5,11 +5,12 @@ module Main (main) where
 import Injection
 
 import Data.Dynamic (Dynamic)
+import Data.Fixed (Fixed, E6)
 import Data.Text (Text)
 import qualified Data.Text.Lazy as Lazy (Text)
 import Numeric.Natural (Natural)
 import Test.Hspec
-import Test.QuickCheck
+import Test.QuickCheck hiding (Fixed)
 import Test.QuickCheck.Instances ()
 
 main :: IO ()
@@ -69,6 +70,9 @@ main = hspec $ do
     describe "instance Injection Lazy.Text Text" $ do
         it "is resolvable" (resolveInjection @Lazy.Text @Text)
         it "is injective" (lawInjective @Lazy.Text @Text)
+    describe "instance Injection Integer (Fixed a)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Fixed E6))
+        it "is injective" (lawInjective @Integer @(Fixed E6))
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()
