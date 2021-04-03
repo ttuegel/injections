@@ -119,6 +119,12 @@ instance HasResolution a => Injection Integer (Fixed a) where
     inject = fromInteger
 ```
 
+```.hs
+-- BAD: No reasonable person would accept this!
+instance Injection String Text where
+    inject = Text.pack . reverse
+```
+
 ## Retraction
 
 Because `Injection` is a lossless conversion, we can define a `Retraction` which undoes it.
