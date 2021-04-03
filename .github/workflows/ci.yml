@@ -48,14 +48,12 @@ jobs:
       run: cabal v2-test --test-show-details=direct all
 
   stack:
-    name: Stack / ${{ matrix.os }} / ghc ${{ matrix.ghc }}
+    name: Stack / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        stack: ["2.5.1"]
-        ghc:
-          - "8.10.4"
+        stack: ["latest"]
 
     steps:
     - name: Check out code
@@ -66,7 +64,10 @@ jobs:
       uses: actions/setup-haskell@v1.1.3
       with:
         ghc-version: ${{ matrix.ghc }}
+        enable-stack: true
         stack-version: ${{ matrix.stack }}
+        stack-no-global: true
+        stack-setup-ghc: true
 
     - name: Enable caching
       uses: actions/cache@v2.1.2
@@ -76,11 +77,11 @@ jobs:
 
     - name: Build
       run: |
-        stack build --system-ghc --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror
+        stack build --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror
 
     - name: Test
       run: |
-        stack test --system-ghc
+        stack test
 
   nix:
     name: Nix
