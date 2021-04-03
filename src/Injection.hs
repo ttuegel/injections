@@ -17,6 +17,7 @@ import Data.Functor.Const (Const (..))
 import Data.Functor.Identity (Identity (..))
 import Data.List.NonEmpty (NonEmpty (..))
 import Data.Maybe (maybeToList)
+import Data.Ord (Down (..))
 import Data.Ratio (Ratio)
 import qualified Data.Ratio as Ratio
 import Data.Text (Text)
@@ -199,3 +200,11 @@ instance Retraction (NonEmpty a) [a] where
     retract (x : xs) = Just (x :| xs)
     retract [] = Nothing
     {-# INLINE retract #-}
+
+instance Injection a (Down a) where
+    inject = pure
+    {-# INLINE inject #-}
+
+instance Injection (Down a) a where
+    inject = getDown
+    {-# INLINE inject #-}

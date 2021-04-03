@@ -1,4 +1,5 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Main (main) where
 
@@ -10,6 +11,7 @@ import Data.Fixed (Fixed, E6)
 import Data.Functor.Const (Const)
 import Data.Functor.Identity (Identity)
 import Data.List.NonEmpty (NonEmpty ((:|)))
+import Data.Ord (Down (..))
 import Data.Ratio (Ratio, (%))
 import Data.Text (Text)
 import qualified Data.Text.Lazy as Lazy (Text)
@@ -135,6 +137,12 @@ main = hspec $ do
         it "is defined over non-empty lists" $ do
             retract @(NonEmpty Integer) @[Integer] [0] `shouldBe` Just (0 :| [])
             retract @(NonEmpty Integer) @[Integer] [0, 1] `shouldBe` Just (0 :| [1])
+    describe "instance Injection Integer (Down Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Down Integer))
+        it "is injective" (lawInjective @Integer @(Down Integer))
+    describe "instance Injection (Down Integer) Integer" $ do
+        it "is resolvable" (resolveInjection @(Down Integer) @Integer)
+        it "is injective" (lawInjective @(Down Integer) @Integer)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()
@@ -164,3 +172,6 @@ lawLeftInverse = property $ \from ->
     let into = inject @from @into from
         from' = retract @from @into into
     in Just from === from'
+
+instance Arbitrary a => Arbitrary (Down a) where
+    arbitrary = Down <$> arbitrary
