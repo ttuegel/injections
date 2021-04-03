@@ -14,6 +14,8 @@ import Data.Dynamic (Dynamic, Typeable, fromDynamic, toDyn)
 import Data.Fixed (Fixed, HasResolution)
 import Data.Functor.Const (Const (..))
 import Data.Maybe (maybeToList)
+import Data.Ratio (Ratio)
+import qualified Data.Ratio as Ratio
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Lazy as Lazy (Text)
@@ -153,3 +155,13 @@ instance Injection a (Const a b) where
 instance Injection (Const a b) a where
     inject = getConst
     {-# INLINE inject #-}
+
+instance Injection Integer (Ratio Integer) where
+    inject = fromInteger
+    {-# INLINE inject #-}
+
+instance Retraction Integer (Ratio Integer) where
+    retract x
+        | Ratio.denominator x == 1 = Just (Ratio.numerator x)
+        | otherwise = Nothing
+    {-# INLINE retract #-}

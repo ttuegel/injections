@@ -7,6 +7,7 @@ import Injection
 import Data.Dynamic (Dynamic)
 import Data.Fixed (Fixed, E6)
 import Data.Functor.Const (Const)
+import Data.Ratio (Ratio, (%))
 import Data.Text (Text)
 import qualified Data.Text.Lazy as Lazy (Text)
 import Numeric.Natural (Natural)
@@ -80,6 +81,19 @@ main = hspec $ do
     describe "instance Injection (Const Integer String) Integer" $ do
         it "is resolvable" (resolveInjection @(Const Integer String) @Integer)
         it "is injective" (lawInjective @(Const Integer String) @Integer)
+    describe "instance Injection Integer (Ratio Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Ratio Integer))
+        it "is injective" (lawInjective @Integer @(Ratio Integer))
+    describe "instance Retraction Integer (Ratio Integer)" $ do
+        it "is resolvable" (resolveRetraction @Integer @(Ratio Integer))
+        it "is the left inverse of inject" (lawLeftInverse @Integer @(Ratio Integer))
+        it "is defined over integers" $ do
+            retract @Integer @(Ratio Integer) (0 % 1) `shouldBe` Just 0
+            retract @Integer @(Ratio Integer) (1 % 1) `shouldBe` Just 1
+            retract @Integer @(Ratio Integer) (1 % (-1)) `shouldBe` Just (-1)
+        it "is not defined over fractions" $ do
+            retract @Integer @(Ratio Integer) (1 % 2) `shouldBe` Nothing
+
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()
