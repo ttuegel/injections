@@ -148,6 +148,10 @@ instance HasResolution a => Injection Integer (Fixed a) where
     inject = fromInteger
     {-# INLINE inject #-}
 
+instance HasResolution a => Retraction Integer (Fixed a) where
+    retract x = retract @Integer (toRational x)
+    {-# INLINE retract #-}
+
 instance Injection a (Const a b) where
     inject = Const
     {-# INLINE inject #-}

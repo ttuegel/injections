@@ -75,6 +75,15 @@ main = hspec $ do
     describe "instance Injection Integer (Fixed a)" $ do
         it "is resolvable" (resolveInjection @Integer @(Fixed E6))
         it "is injective" (lawInjective @Integer @(Fixed E6))
+    describe "instance Retraction Integer (Fixed a)" $ do
+        it "is resolvable" (resolveRetraction @Integer @(Fixed E6))
+        it "is the left inverse of inject" (lawLeftInverse @Integer @(Fixed E6))
+        it "is defined over integers" $ do
+            retract @Integer @(Fixed E6) 0 `shouldBe` Just 0
+            retract @Integer @(Fixed E6) 1 `shouldBe` Just 1
+            retract @Integer @(Fixed E6) (-1) `shouldBe` Just (-1)
+        it "is not defined over fractions" $ do
+            retract @Integer @(Fixed E6) (1 / 2) `shouldBe` Nothing
     describe "instance Injection Integer (Const Integer String)" $ do
         it "is resolvable" (resolveInjection @Integer @(Const Integer String))
         it "is injective" (lawInjective @Integer @(Const Integer String))
