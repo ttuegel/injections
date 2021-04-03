@@ -9,6 +9,7 @@ import Data.Dynamic (Dynamic)
 import Data.Fixed (Fixed, E6)
 import Data.Functor.Const (Const)
 import Data.Functor.Identity (Identity)
+import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.Ratio (Ratio, (%))
 import Data.Text (Text)
 import qualified Data.Text.Lazy as Lazy (Text)
@@ -119,10 +120,21 @@ main = hspec $ do
             retract @Double @(Complex Double) (1 :+ 1) `shouldBe` Nothing
     describe "instance Injection Integer (Identity Integer)" $ do
         it "is resolvable" (resolveInjection @Integer @(Identity Integer))
-        it "is injective" (resolveInjection @Integer @(Identity Integer))
+        it "is injective" (lawInjective @Integer @(Identity Integer))
     describe "instance Injection (Identity Integer) Integer" $ do
         it "is resolvable" (resolveInjection @(Identity Integer) @Integer)
-        it "is injective" (resolveInjection @(Identity Integer) @Integer)
+        it "is injective" (lawInjective @(Identity Integer) @Integer)
+    describe "instance Injection (NonEmpty Integer) [Integer]" $ do
+        it "is resolvable" (resolveInjection @(NonEmpty Integer) @[Integer])
+        it "is injective" (lawInjective @(NonEmpty Integer) @[Integer])
+    describe "instance Retraction (NonEmpty Integer) [Integer]" $ do
+        it "is resolvable" (resolveRetraction @(NonEmpty Integer) @[Integer])
+        it "is the left inverse of inject" (lawLeftInverse @(NonEmpty Integer) @[Integer])
+        it "is not defined on the empty list" $ do
+            retract @(NonEmpty Integer) @[Integer] [] `shouldBe` Nothing
+        it "is defined over non-empty lists" $ do
+            retract @(NonEmpty Integer) @[Integer] [0] `shouldBe` Just (0 :| [])
+            retract @(NonEmpty Integer) @[Integer] [0, 1] `shouldBe` Just (0 :| [1])
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()

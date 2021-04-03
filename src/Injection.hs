@@ -15,6 +15,7 @@ import Data.Dynamic (Dynamic, Typeable, fromDynamic, toDyn)
 import Data.Fixed (Fixed, HasResolution)
 import Data.Functor.Const (Const (..))
 import Data.Functor.Identity (Identity (..))
+import Data.List.NonEmpty (NonEmpty (..))
 import Data.Maybe (maybeToList)
 import Data.Ratio (Ratio)
 import qualified Data.Ratio as Ratio
@@ -189,3 +190,12 @@ instance Injection a (Identity a) where
 instance Injection (Identity a) a where
     inject = runIdentity
     {-# INLINE inject #-}
+
+instance Injection (NonEmpty a) [a] where
+    inject (x :| xs) = x : xs
+    {-# INLINE inject #-}
+
+instance Retraction (NonEmpty a) [a] where
+    retract (x : xs) = Just (x :| xs)
+    retract [] = Nothing
+    {-# INLINE retract #-}
