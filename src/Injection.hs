@@ -18,6 +18,7 @@ import Data.Functor.Identity (Identity (..))
 import Data.List.NonEmpty (NonEmpty (..))
 import Data.Maybe (maybeToList)
 import Data.Monoid (Product (..))
+import Data.Monoid (Sum (..))
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio)
 import qualified Data.Ratio as Ratio
@@ -216,4 +217,12 @@ instance Injection a (Product a) where
 
 instance Injection (Product a) a where
     inject = getProduct
+    {-# INLINE inject #-}
+
+instance Injection a (Sum a) where
+    inject = pure
+    {-# INLINE inject #-}
+
+instance Injection (Sum a) a where
+    inject = getSum
     {-# INLINE inject #-}

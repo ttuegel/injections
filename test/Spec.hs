@@ -12,6 +12,7 @@ import Data.Functor.Const (Const)
 import Data.Functor.Identity (Identity)
 import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.Monoid (Product)
+import Data.Monoid (Sum)
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio, (%))
 import Data.Text (Text)
@@ -150,6 +151,12 @@ main = hspec $ do
     describe "instance Injection (Product Integer) Integer" $ do
         it "is resolvable" (resolveInjection @(Product Integer) @Integer)
         it "is injective" (lawInjective @(Product Integer) @Integer)
+    describe "instance Injection Integer (Sum Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Sum Integer))
+        it "is injective" (lawInjective @Integer @(Sum Integer))
+    describe "instance Injection (Sum Integer) Integer" $ do
+        it "is resolvable" (resolveInjection @(Sum Integer) @Integer)
+        it "is injective" (lawInjective @(Sum Integer) @Integer)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()
