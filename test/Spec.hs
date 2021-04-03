@@ -4,6 +4,7 @@ module Main (main) where
 
 import Injection
 
+import Data.Complex (Complex ((:+)))
 import Data.Dynamic (Dynamic)
 import Data.Fixed (Fixed, E6)
 import Data.Functor.Const (Const)
@@ -102,6 +103,19 @@ main = hspec $ do
             retract @Integer @(Ratio Integer) (1 % (-1)) `shouldBe` Just (-1)
         it "is not defined over fractions" $ do
             retract @Integer @(Ratio Integer) (1 % 2) `shouldBe` Nothing
+    describe "instance Injection Double (Complex Double)" $ do
+        it "is resolvable" (resolveInjection @Double @(Complex Double))
+        it "is injective" (lawInjective @Double @(Complex Double))
+    describe "instance Retraction Double (Complex Double)" $ do
+        it "is resolvable" (resolveRetraction @Double @(Complex Double))
+        it "is the left inverse of inject" (lawLeftInverse @Double @(Complex Double))
+        it "is defined over real numbers" $ do
+            retract @Double @(Complex Double) (0 :+ 0) `shouldBe` Just 0
+            retract @Double @(Complex Double) (1 :+ 0) `shouldBe` Just 1
+            retract @Double @(Complex Double) ((-1) :+ 0) `shouldBe` Just (-1)
+        it "is not defined over imaginary and complex numbers" $ do
+            retract @Double @(Complex Double) (0 :+ 1) `shouldBe` Nothing
+            retract @Double @(Complex Double) (1 :+ 1) `shouldBe` Nothing
 
 
 resolveInjection :: forall from into. Injection from into => Expectation

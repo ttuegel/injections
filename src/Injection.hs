@@ -10,6 +10,7 @@ module Injection
     , Retraction (..)
     ) where
 
+import Data.Complex (Complex ((:+)))
 import Data.Dynamic (Dynamic, Typeable, fromDynamic, toDyn)
 import Data.Fixed (Fixed, HasResolution)
 import Data.Functor.Const (Const (..))
@@ -168,4 +169,14 @@ instance Retraction Integer (Ratio Integer) where
     retract x
         | Ratio.denominator x == 1 = Just (Ratio.numerator x)
         | otherwise = Nothing
+    {-# INLINE retract #-}
+
+instance Num a => Injection a (Complex a) where
+    inject = (:+ 0)
+    {-# INLINE inject #-}
+
+instance (Eq a, Num a) => Retraction a (Complex a) where
+    retract (x :+ y)
+      | y == 0 = Just x
+      | otherwise = Nothing
     {-# INLINE retract #-}
