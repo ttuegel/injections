@@ -17,6 +17,7 @@ import Data.Functor.Const (Const (..))
 import Data.Functor.Identity (Identity (..))
 import Data.List.NonEmpty (NonEmpty (..))
 import Data.Maybe (maybeToList)
+import Data.Monoid (Product (..))
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio)
 import qualified Data.Ratio as Ratio
@@ -207,4 +208,12 @@ instance Injection a (Down a) where
 
 instance Injection (Down a) a where
     inject = getDown
+    {-# INLINE inject #-}
+
+instance Injection a (Product a) where
+    inject = pure
+    {-# INLINE inject #-}
+
+instance Injection (Product a) a where
+    inject = getProduct
     {-# INLINE inject #-}
