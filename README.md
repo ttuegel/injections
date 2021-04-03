@@ -83,13 +83,6 @@ instance Injection (Maybe a) [a] where
 
 Where `Maybe a` contains either zero or one values of `a`, `[a]` contains zero or more values of `a`.
 
-Likewise, there is a canonical injection from the natural numbers (non-negative integers) to the integers:
-
-```.hs
-instance Injection Natural Integer where
-    inject = toInteger
-```
-
 Some common conversions are notably _not_ injective.
 For example, `Data.Map.fromList` returns the same `Map` for different lists:
 
@@ -98,6 +91,33 @@ Data.Map.fromList [('a', 'A'), ('b', 'B')] == Data.Map.fromList [('b', 'B'), ('a
 ```
 
 Therefore, we cannot define an `instance [(k, v)] (Map k v)`.
+
+When there is an equivalence between two types, that equivalence is usually an injection.
+For example, the class `Integral` defines
+
+```.hs
+toInteger :: Integra a => a -> Integer
+```
+
+Where this conversion is a total equivalence, it forms a canonical injection into `Integer`:
+
+```.hs
+instance Injection Natural Integer where
+    inject = toInteger
+```
+
+Likewise, the class `Num` defines an equivalence
+
+```.hs
+fromInteger :: Num a => Integer -> a
+```
+
+For types that have total implementations of `fromInteger`, this is usually an injection:
+
+```.hs
+instance HasResolution a => Injection Integer (Fixed a) where
+    inject = fromInteger
+```
 
 ## Retraction
 
