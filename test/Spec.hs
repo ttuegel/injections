@@ -8,6 +8,7 @@ import Data.Complex (Complex ((:+)))
 import Data.Dynamic (Dynamic)
 import Data.Fixed (Fixed, E6)
 import Data.Functor.Const (Const)
+import Data.Functor.Identity (Identity)
 import Data.Ratio (Ratio, (%))
 import Data.Text (Text)
 import qualified Data.Text.Lazy as Lazy (Text)
@@ -116,7 +117,12 @@ main = hspec $ do
         it "is not defined over imaginary and complex numbers" $ do
             retract @Double @(Complex Double) (0 :+ 1) `shouldBe` Nothing
             retract @Double @(Complex Double) (1 :+ 1) `shouldBe` Nothing
-
+    describe "instance Injection Integer (Identity Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Identity Integer))
+        it "is injective" (resolveInjection @Integer @(Identity Integer))
+    describe "instance Injection (Identity Integer) Integer" $ do
+        it "is resolvable" (resolveInjection @(Identity Integer) @Integer)
+        it "is injective" (resolveInjection @(Identity Integer) @Integer)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()

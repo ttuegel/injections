@@ -14,6 +14,7 @@ import Data.Complex (Complex ((:+)))
 import Data.Dynamic (Dynamic, Typeable, fromDynamic, toDyn)
 import Data.Fixed (Fixed, HasResolution)
 import Data.Functor.Const (Const (..))
+import Data.Functor.Identity (Identity (..))
 import Data.Maybe (maybeToList)
 import Data.Ratio (Ratio)
 import qualified Data.Ratio as Ratio
@@ -180,3 +181,11 @@ instance (Eq a, Num a) => Retraction a (Complex a) where
       | y == 0 = Just x
       | otherwise = Nothing
     {-# INLINE retract #-}
+
+instance Injection a (Identity a) where
+    inject = Identity
+    {-# INLINE inject #-}
+
+instance Injection (Identity a) a where
+    inject = runIdentity
+    {-# INLINE inject #-}
