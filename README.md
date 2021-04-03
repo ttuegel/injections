@@ -51,7 +51,7 @@ instance Injection a (Maybe a) where
     inject = Just
 ```
 
-Actually, constructors with a single argument are always injective functions.
+Constructors with a single argument are always injective functions.
 We must use `Just` here; if we had written `inject _ = Nothing`, that would violate the injective law.
 Usually, any putative definition of `inject` with a wildcard match on the left-hand side will fail to be injective.
 There are exceptions to this guideline; for example, this instance is injective:
@@ -64,7 +64,14 @@ instance Injection () (Maybe ()) where
 ```
 
 However, we also require instances to be _canonical_.
-We feel that this instance is not canonical because it is not written to accept the widest possible range of types.
+This instance isn't canonical because it arbitrarily restricts @from ~ ()@.
+Actually, there is already the definition of a canonical injection into `Maybe`;
+we may as well write
+
+```.hs
+instance Injection a (Maybe a) where
+    inject = pure
+```
 
 One consequence of the injectivity law is that the output type must be at least as large as the input type.
 We can inject a `Maybe a` into a `[a]` because the latter type is strictly larger:
