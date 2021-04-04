@@ -17,6 +17,7 @@ import Data.Monoid (Sum)
 import qualified Data.Monoid as Monoid (First, Last)
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio, (%))
+import qualified Data.Semigroup as Semigroup (First, Last)
 import Data.Text (Text)
 import qualified Data.Text.Lazy as Lazy (Text)
 import Numeric.Natural (Natural)
@@ -181,6 +182,18 @@ main = hspec $ do
         it "is the left inverse of inject" (lawLeftInverse @Integer @(Monoid.First Integer))
         it "is not defined over mempty" $ do
             retract @Integer @(Monoid.First Integer) mempty `shouldBe` Nothing
+    describe "instance Injection Integer (Semigroup.First Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Semigroup.First Integer))
+        it "is injective" (lawInjective @Integer @(Semigroup.First Integer))
+    describe "instance Injection (Semigroup.First Integer) Integer" $ do
+        it "is resolvable" (resolveInjection @(Semigroup.First Integer) @Integer)
+        it "is injective" (lawInjective @(Semigroup.First Integer) @Integer)
+    describe "instance Injection Integer (Semigroup.Last Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Semigroup.Last Integer))
+        it "is injective" (lawInjective @Integer @(Semigroup.Last Integer))
+    describe "instance Injection (Semigroup.Last Integer) Integer" $ do
+        it "is resolvable" (resolveInjection @(Semigroup.Last Integer) @Integer)
+        it "is injective" (lawInjective @(Semigroup.Last Integer) @Integer)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()

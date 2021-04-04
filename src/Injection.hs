@@ -24,6 +24,7 @@ import qualified Data.Monoid as Monoid (First (..), Last (..))
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio)
 import qualified Data.Ratio as Ratio
+import qualified Data.Semigroup as Semigroup (First (..), Last (..))
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Lazy as Lazy (Text)
@@ -252,3 +253,19 @@ instance Injection a (Monoid.First a) where
 instance Retraction a (Monoid.First a) where
     retract = Monoid.getFirst
     {-# INLINE retract #-}
+
+instance Injection a (Semigroup.First a) where
+    inject = pure
+    {-# INLINE inject #-}
+
+instance Injection (Semigroup.First a) a where
+    inject = Semigroup.getFirst
+    {-# INLINE inject #-}
+
+instance Injection a (Semigroup.Last a) where
+    inject = pure
+    {-# INLINE inject #-}
+
+instance Injection (Semigroup.Last a) a where
+    inject = Semigroup.getLast
+    {-# INLINE inject #-}
