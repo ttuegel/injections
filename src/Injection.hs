@@ -17,6 +17,7 @@ import Data.Functor.Const (Const (..))
 import Data.Functor.Identity (Identity (..))
 import Data.List.NonEmpty (NonEmpty (..))
 import Data.Maybe (maybeToList)
+import Data.Monoid (Dual (..))
 import Data.Monoid (Product (..))
 import Data.Monoid (Sum (..))
 import Data.Ord (Down (..))
@@ -225,4 +226,12 @@ instance Injection a (Sum a) where
 
 instance Injection (Sum a) a where
     inject = getSum
+    {-# INLINE inject #-}
+
+instance Injection a (Dual a) where
+    inject = pure
+    {-# INLINE inject #-}
+
+instance Injection (Dual a) a where
+    inject = getDual
     {-# INLINE inject #-}
