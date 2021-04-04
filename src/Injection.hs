@@ -85,11 +85,11 @@ Specifying the type parameters will give clearer error messages from the type ch
 class Injection from into => Retraction from into where
     retract :: into -> Maybe from
 
-instance {-# OVERLAPPABLE #-} Injection a a where
+instance Injection a a where
     inject = id
     {-# INLINE inject #-}
 
-instance {-# OVERLAPPABLE #-} Retraction a a where
+instance Retraction a a where
     retract = Just
     {-# INLINE retract #-}
 
