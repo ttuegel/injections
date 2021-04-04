@@ -20,7 +20,7 @@ import Data.Maybe (maybeToList)
 import Data.Monoid (Dual (..))
 import Data.Monoid (Product (..))
 import Data.Monoid (Sum (..))
-import qualified Data.Monoid as Monoid (Last (..))
+import qualified Data.Monoid as Monoid (First (..), Last (..))
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio)
 import qualified Data.Ratio as Ratio
@@ -243,4 +243,12 @@ instance Injection a (Monoid.Last a) where
 
 instance Retraction a (Monoid.Last a) where
     retract = Monoid.getLast
+    {-# INLINE retract #-}
+
+instance Injection a (Monoid.First a) where
+    inject = pure
+    {-# INLINE inject #-}
+
+instance Retraction a (Monoid.First a) where
+    retract = Monoid.getFirst
     {-# INLINE retract #-}

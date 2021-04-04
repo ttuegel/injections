@@ -14,7 +14,7 @@ import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.Monoid (Dual)
 import Data.Monoid (Product)
 import Data.Monoid (Sum)
-import qualified Data.Monoid as Monoid (Last)
+import qualified Data.Monoid as Monoid (First, Last)
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio, (%))
 import Data.Text (Text)
@@ -173,6 +173,14 @@ main = hspec $ do
         it "is the left inverse of inject" (lawLeftInverse @Integer @(Monoid.Last Integer))
         it "is not defined over mempty" $ do
             retract @Integer @(Monoid.Last Integer) mempty `shouldBe` Nothing
+    describe "instance Injection Integer (Monoid.First Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Monoid.First Integer))
+        it "is injective" (lawInjective @Integer @(Monoid.First Integer))
+    describe "instance Retraction Injection (Monoid.First Integer)" $ do
+        it "is resolvable" (resolveRetraction @Integer @(Monoid.First Integer))
+        it "is the left inverse of inject" (lawLeftInverse @Integer @(Monoid.First Integer))
+        it "is not defined over mempty" $ do
+            retract @Integer @(Monoid.First Integer) mempty `shouldBe` Nothing
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()
