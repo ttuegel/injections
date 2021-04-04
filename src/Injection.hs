@@ -214,7 +214,7 @@ instance Injection a (Down a) where
     {-# INLINE inject #-}
 
 instance Injection (Down a) a where
-    inject = getDown
+    inject = \(Down a) -> a
     {-# INLINE inject #-}
 
 instance Injection a (Product a) where
