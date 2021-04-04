@@ -20,6 +20,8 @@ import Data.Maybe (maybeToList)
 import Data.Monoid (Dual (..))
 import Data.Monoid (Product (..))
 import Data.Monoid (Sum (..))
+import Data.Monoid (Any (..))
+import Data.Monoid (All (..))
 import qualified Data.Monoid as Monoid (First (..), Last (..))
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio)
@@ -289,4 +291,20 @@ instance Injection (Min a) a where
 
 instance Injection a (r -> a) where
     inject = const
+    {-# INLINE inject #-}
+
+instance Injection Bool Any where
+    inject = Any
+    {-# INLINE inject #-}
+
+instance Injection Any Bool where
+    inject = getAny
+    {-# INLINE inject #-}
+
+instance Injection Bool All where
+    inject = All
+    {-# INLINE inject #-}
+
+instance Injection All Bool where
+    inject = getAll
     {-# INLINE inject #-}

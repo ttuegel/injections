@@ -14,6 +14,7 @@ import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.Monoid (Dual)
 import Data.Monoid (Product)
 import Data.Monoid (Sum)
+import Data.Monoid (All, Any)
 import qualified Data.Monoid as Monoid (First, Last)
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio, (%))
@@ -209,6 +210,18 @@ main = hspec $ do
         it "is injective" (lawInjective @(Min Integer) @Integer)
     describe "instance Injection Integer (String -> Integer)" $ do
         it "is resolvable" (resolveInjection @Integer @(String -> Integer))
+    describe "instance Injection Bool Any" $ do
+        it "is resolvable" (resolveInjection @Bool @Any)
+        it "is injective" (lawInjective @Bool @Any)
+    describe "instance Injection Any Bool" $ do
+        it "is resolvable" (resolveInjection @Any @Bool)
+        it "is injective" (lawInjective @Any @Bool)
+    describe "instance Injection Bool All" $ do
+        it "is resolvable" (resolveInjection @Bool @All)
+        it "is injective" (lawInjective @Bool @All)
+    describe "instance Injection All Bool" $ do
+        it "is resolvable" (resolveInjection @All @Bool)
+        it "is injective" (lawInjective @All @Bool)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()
