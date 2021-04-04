@@ -24,6 +24,7 @@ import qualified Data.Monoid as Monoid (First (..), Last (..))
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio)
 import qualified Data.Ratio as Ratio
+import Data.Semigroup (Max (..), Min (..))
 import qualified Data.Semigroup as Semigroup (First (..), Last (..))
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -268,4 +269,20 @@ instance Injection a (Semigroup.Last a) where
 
 instance Injection (Semigroup.Last a) a where
     inject = Semigroup.getLast
+    {-# INLINE inject #-}
+
+instance Injection a (Max a) where
+    inject = pure
+    {-# INLINE inject #-}
+
+instance Injection (Max a) a where
+    inject = getMax
+    {-# INLINE inject #-}
+
+instance Injection a (Min a) where
+    inject = pure
+    {-# INLINE inject #-}
+
+instance Injection (Min a) a where
+    inject = getMin
     {-# INLINE inject #-}

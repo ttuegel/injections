@@ -17,6 +17,7 @@ import Data.Monoid (Sum)
 import qualified Data.Monoid as Monoid (First, Last)
 import Data.Ord (Down (..))
 import Data.Ratio (Ratio, (%))
+import Data.Semigroup (Max, Min)
 import qualified Data.Semigroup as Semigroup (First, Last)
 import Data.Text (Text)
 import qualified Data.Text.Lazy as Lazy (Text)
@@ -194,6 +195,18 @@ main = hspec $ do
     describe "instance Injection (Semigroup.Last Integer) Integer" $ do
         it "is resolvable" (resolveInjection @(Semigroup.Last Integer) @Integer)
         it "is injective" (lawInjective @(Semigroup.Last Integer) @Integer)
+    describe "instance Injection Integer (Max Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Max Integer))
+        it "is injective" (lawInjective @Integer @(Max Integer))
+    describe "instance Injection (Max Integer) Integer" $ do
+        it "is resolvable" (resolveInjection @(Max Integer) @Integer)
+        it "is injective" (lawInjective @(Max Integer) @Integer)
+    describe "instance Injection Integer (Min Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(Min Integer))
+        it "is injective" (lawInjective @Integer @(Min Integer))
+    describe "instance Injection (Min Integer) Integer" $ do
+        it "is resolvable" (resolveInjection @(Min Integer) @Integer)
+        it "is injective" (lawInjective @(Min Integer) @Integer)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()
