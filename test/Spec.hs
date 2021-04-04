@@ -207,6 +207,8 @@ main = hspec $ do
     describe "instance Injection (Min Integer) Integer" $ do
         it "is resolvable" (resolveInjection @(Min Integer) @Integer)
         it "is injective" (lawInjective @(Min Integer) @Integer)
+    describe "instance Injection Integer (String -> Integer)" $ do
+        it "is resolvable" (resolveInjection @Integer @(String -> Integer))
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()

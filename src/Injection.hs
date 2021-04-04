@@ -286,3 +286,7 @@ instance Injection a (Min a) where
 instance Injection (Min a) a where
     inject = getMin
     {-# INLINE inject #-}
+
+instance Injection a (r -> a) where
+    inject = const
+    {-# INLINE inject #-}
