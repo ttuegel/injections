@@ -1,26 +1,14 @@
 {
-    "haskell-language-server-nix": {
-        "branch": "main",
-        "description": null,
-        "homepage": null,
-        "owner": "ttuegel",
-        "repo": "haskell-language-server-nix",
-        "rev": "fc417f86a11b2de57945e706506b91822aba61bd",
-        "sha256": "1na9ghb6rk7sd09bfq8r5vw53nif6f0wc2dql5bfr9gs5sqkkiik",
-        "type": "tarball",
-        "url": "https://github.com/ttuegel/haskell-language-server-nix/archive/fc417f86a11b2de57945e706506b91822aba61bd.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "haskell.nix": {
         "branch": "master",
         "description": "Alternative Haskell Infrastructure for Nixpkgs",
         "homepage": "https://input-output-hk.github.io/haskell.nix",
         "owner": "input-output-hk",
         "repo": "haskell.nix",
-        "rev": "064d4eb587a78c8e073bbbaec6d6022eb234e015",
-        "sha256": "1xkv2a614qlrhijsp22ihr783fbffipyj59mh6pvs1nvxmh5j4dl",
+        "rev": "7f00f4427d8506abf247adaf0e33f7f8c3d0ba49",
+        "sha256": "1kbfha2y6xn0zn6iyhnj6kxqaskm144mzpbzzkwrxnq7cbhj6psl",
         "type": "tarball",
-        "url": "https://github.com/input-output-hk/haskell.nix/archive/064d4eb587a78c8e073bbbaec6d6022eb234e015.tar.gz",
+        "url": "https://github.com/input-output-hk/haskell.nix/archive/7f00f4427d8506abf247adaf0e33f7f8c3d0ba49.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -35,16 +23,16 @@
         "url": "https://github.com/nmattia/niv/archive/ba57d5a29b4e0f2085917010380ef3ddc3cf380f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "nix-lib": {
-        "branch": "main",
-        "description": "A library of useful Nix functions",
+    "nix-haskell-hls": {
+        "branch": "master",
+        "description": "Nix builds of Haskell Language Server",
         "homepage": null,
-        "owner": "ttuegel",
-        "repo": "nix-lib",
-        "rev": "66bb0ab890ff4d828a2dcfc7d5968465d0c7084f",
-        "sha256": "03828qxfxc1xv44jj6y2ar5h58lcppg0admn0smqzm3s1gk6rbnc",
+        "owner": "shajra",
+        "repo": "nix-haskell-hls",
+        "rev": "7f5dad7d3569467cd7f41429566e59f0cbf1dc40",
+        "sha256": "02fb8x5g7kc8rklb6d937xglrhkj5y6f0vlvpzalqhhfcyxp1l3q",
         "type": "tarball",
-        "url": "https://github.com/ttuegel/nix-lib/archive/66bb0ab890ff4d828a2dcfc7d5968465d0c7084f.tar.gz",
+        "url": "https://github.com/shajra/nix-haskell-hls/archive/7f5dad7d3569467cd7f41429566e59f0cbf1dc40.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
@@ -57,6 +45,18 @@
         "sha256": "157c64220lf825ll4c0cxsdwg7cxqdx4z559fdp7kpz0g6p8fhhr",
         "type": "tarball",
         "url": "https://github.com/NixOS/nixpkgs-channels/archive/75f4ba05c63be3f147bcc2f7bd4ba1f029cedcb1.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "ttuegel": {
+        "branch": "main",
+        "description": "A library of useful Nix functions",
+        "homepage": null,
+        "owner": "ttuegel",
+        "repo": "nix-lib",
+        "rev": "66bb0ab890ff4d828a2dcfc7d5968465d0c7084f",
+        "sha256": "03828qxfxc1xv44jj6y2ar5h58lcppg0admn0smqzm3s1gk6rbnc",
+        "type": "tarball",
+        "url": "https://github.com/ttuegel/nix-lib/archive/66bb0ab890ff4d828a2dcfc7d5968465d0c7084f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
