@@ -35,7 +35,7 @@ import qualified Data.Text.Lazy as Text.Lazy
 import Data.Void (Void)
 import Numeric.Natural (Natural)
 
-{- | @Injection@ describes a lossless conversion from one type to another.
+{- | @Injection@ describes a lossless conversion that includes one type in another.
 
 The sole method of this class,
 
