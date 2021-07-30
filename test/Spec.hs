@@ -66,12 +66,6 @@ main = hspec $ do
             retract @Natural @Integer 1 `shouldBe` Just 1
         it "is not defined over negative integers" $ do
             retract @Natural @Integer (-1) `shouldBe` Nothing
-    describe "instance Injection String Text" $ do
-        it "is resolvable" (resolveInjection @String @Text)
-        it "is injective" (lawInjective @String @Text)
-    describe "instance Injection String Lazy.Text" $ do
-        it "is resolvable" (resolveInjection @String @Lazy.Text)
-        it "is injective" (lawInjective @String @Lazy.Text)
     describe "instance Injection Text String" $ do
         it "is resolvable" (resolveInjection @Text @String)
         it "is injective" (lawInjective @Text @String)
