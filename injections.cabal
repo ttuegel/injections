@@ -1,12 +1,12 @@
 cabal-version:       2.4
-name:                injection
+name:                injections
 version:             0.0.0.0
-synopsis:            Canonical injections and projections.
+synopsis:            Canonical categorical conversions (injections and projections)
 description:
     Canonical injections and projections.
-    See [README.md](https://github.com/ttuegel/injection#injection) for more details.
-homepage:            https://github.com/ttuegel/injection
-bug-reports:         https://github.com/ttuegel/injection/issues
+    See [README.md](https://github.com/ttuegel/injections#injections) for more details.
+homepage:            https://github.com/ttuegel/injections
+bug-reports:         https://github.com/ttuegel/injections/issues
 license:             BSD-3-Clause
 license-file:        LICENSE
 author:              Thomas Tuegel
@@ -19,7 +19,7 @@ tested-with:         GHC == 8.10.2
 
 source-repository head
   type:                git
-  location:            https://github.com/ttuegel/injection.git
+  location:            https://github.com/ttuegel/injections.git
 
 common common-options
   build-depends:       base >= 4.12
@@ -65,13 +65,13 @@ library
     containers >= 0.5,
     text >= 1.2
 
-test-suite injection-test
+test-suite injections-test
   import:              common-options
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
   build-depends:
-    injection,
+    injections,
     hspec >= 2.7,
     QuickCheck >= 2.14,
     quickcheck-instances >= 0.3,

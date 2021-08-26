@@ -1,4 +1,4 @@
 cradle:
   cabal:
-  - { path: "./src", component: "lib:injection" }
-  - { path: "./test", component: "injection-test" }
+  - { path: "./src", component: "lib:injections" }
+  - { path: "./test", component: "injections-test" }

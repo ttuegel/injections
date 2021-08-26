@@ -8,5 +8,5 @@ let
 in
 
 pkgs.haskell-nix.project {
-  src = ttuegel.cleanGitSubtree { name = "injection"; src = ./.; };
+  src = ttuegel.cleanGitSubtree { name = "injections"; src = ./.; };
 }
