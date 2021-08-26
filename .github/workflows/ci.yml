@@ -99,7 +99,7 @@ jobs:
           trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 
     - name: Build
-      run: nix-build -A injection.components.library
+      run: nix-build -A injections.components.library
 
     - name: Test
-      run: nix-build -A injection.checks
+      run: nix-build -A injections.checks

@@ -1,9 +1,14 @@
-# injection
+# injections
 
-[![GitHub CI](https://github.com/ttuegel/injection/workflows/CI/badge.svg)](https://github.com/ttuegel/injection/actions)
+[![GitHub CI](https://github.com/ttuegel/injections/workflows/CI/badge.svg)](https://github.com/ttuegel/injections/actions)
 [![BSD-3-Clause license](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](LICENSE)
 
-Description: A library describing canonical injections and projections between Haskell types.
+Canonical categorical conversions (injections and projections) between Haskell types.
+
+Problem: We want predictable conversions between types that have equivalent semantics in their domains
+but not equivalent representations (so we can't use `coerce`).
+
+Alternatively: Rust's `From` trait with Haskell flavor.
 
 ## Injection
 
