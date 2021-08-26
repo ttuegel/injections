@@ -4,6 +4,7 @@
 module Main (main) where
 
 import Injection
+import Projection
 
 import Data.Complex (Complex ((:+)))
 import Data.Dynamic (Dynamic)
@@ -11,6 +12,8 @@ import Data.Fixed (Fixed, E6)
 import Data.Functor.Const (Const)
 import Data.Functor.Identity (Identity)
 import Data.List.NonEmpty (NonEmpty ((:|)))
+import Data.Map (Map)
+import qualified Data.Map as Map
 import Data.Monoid (Dual)
 import Data.Monoid (Product)
 import Data.Monoid (Sum)
@@ -20,6 +23,8 @@ import Data.Ord (Down (..))
 import Data.Ratio (Ratio, (%))
 import Data.Semigroup (Max, Min)
 import qualified Data.Semigroup as Semigroup (First, Last)
+import Data.Set (Set)
+import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text.Lazy as Lazy (Text)
 import Numeric.Natural (Natural)
@@ -216,12 +221,30 @@ main = hspec $ do
     describe "instance Injection All Bool" $ do
         it "is resolvable" (resolveInjection @All @Bool)
         it "is injective" (lawInjective @All @Bool)
+    describe "instance Projection Integer Integer" $ do
+        it "is resolvable" (resolveProjection @Integer @Integer)
+        it "is surjective" (lawSurjective @Integer @Integer id)
+    describe "instance Section Integer Integer" $ do
+        it "is resolvable" (resolveSection @Integer @Integer)
+        it "is the right inverse of project" (lawRightInverse @Integer @Integer)
+    describe "instance Projection [(Integer, Integer)] (Map Integer Integer)" $ do
+        it "is resolvable" (resolveProjection @[(Integer, Integer)] @(Map Integer Integer))
+        it "is surjective" (lawSurjective @[(Integer, Integer)] @(Map Integer Integer) Map.toList)
+    describe "instance Projection [Integer] (Set Integer)" $ do
+        it "is resolvable" (resolveProjection @[Integer] @(Set Integer))
+        it "is surjective" (lawSurjective @[Integer] @(Set Integer) Set.toList)
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()
 
 resolveRetraction :: forall from into. Retraction from into => Expectation
 resolveRetraction = seq (retract @from @into) return ()
+
+resolveProjection :: forall whole part. Projection whole part => Expectation
+resolveProjection = seq (project @whole @part) return ()
+
+resolveSection :: forall whole part. Section whole part => Expectation
+resolveSection = seq (update @whole @part) return ()
 
 lawInjective
     :: forall from into
@@ -245,6 +268,30 @@ lawLeftInverse = property $ \from ->
     let into = inject @from @into from
         from' = retract @from @into into
     in Just from === from'
+
+lawSurjective
+    :: forall whole part
+    .  Projection whole part
+    => Arbitrary part
+    => (Eq part, Show part)
+    => (part -> whole)  -- ^ any total right inverse of @project@
+    -> Property
+lawSurjective rightInverse = property $ \part ->
+    -- This test actually proves nothing: that a right inverse of 'project'
+    -- merely exists proves that it is surjective. Here, we are just probing the
+    -- putative right inverse.
+    project (rightInverse part) === part
+
+lawRightInverse
+    :: forall whole part
+    .  Section whole part
+    => Arbitrary whole
+    => Show whole
+    => Arbitrary part
+    => (Eq part, Show part)
+    => Property
+lawRightInverse = property $ \part whole ->
+    project @whole @part (update whole part) === part
 
 instance Arbitrary a => Arbitrary (Down a) where
     arbitrary = Down <$> arbitrary
