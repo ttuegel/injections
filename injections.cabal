@@ -1,6 +1,7 @@
 cabal-version:       2.4
 name:                injections
-version:             0.0.0.0
+version:             0.1.0.0
+category: Data
 synopsis:            Canonical categorical conversions (injections and projections)
 description:
     Canonical injections and projections.
@@ -15,14 +16,13 @@ copyright:           2020 Thomas Tuegel
 build-type:          Simple
 extra-doc-files:     README.md
                      CHANGELOG.md
-tested-with:         GHC == 8.10.2
 
 source-repository head
   type:                git
   location:            https://github.com/ttuegel/injections.git
 
 common common-options
-  build-depends:       base >= 4.12
+  build-depends:       base >= 4.12 && < 4.16
 
   ghc-options:         -Wall
                        -Wcompat
