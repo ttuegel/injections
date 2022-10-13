@@ -26,7 +26,9 @@ import qualified Data.Semigroup as Semigroup (First, Last)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text)
+import qualified Data.Text as Text
 import qualified Data.Text.Lazy as Lazy (Text)
+import qualified Data.Text.Lazy as Text.Lazy
 import Numeric.Natural (Natural)
 import Test.Hspec
 import Test.QuickCheck hiding (Fixed)
@@ -233,6 +235,13 @@ main = hspec $ do
     describe "instance Projection [Integer] (Set Integer)" $ do
         it "is resolvable" (resolveProjection @[Integer] @(Set Integer))
         it "is surjective" (lawSurjective @[Integer] @(Set Integer) Set.toList)
+    describe "instance Projection String Text" $ do
+        it "is resolvable" (resolveProjection @String @Text)
+        it "is surjective" (lawSurjective @String @Text Text.unpack)
+        it "replaces invalid scalar values" $ do
+            -- 'Text' cannot contain values in the range U+D800 to U+DFFF inclusive
+            (project @String @Text "\xD800") `shouldBe` Text.pack "\xFFFD"
+            (project @String @Text "\xDFFF") `shouldBe` Text.pack "\xFFFD"
 
 resolveInjection :: forall from into. Injection from into => Expectation
 resolveInjection = seq (inject @from @into) return ()

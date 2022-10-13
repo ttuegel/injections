@@ -14,6 +14,10 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Set (Set)
 import qualified Data.Set as Set
+import Data.Text (Text)
+import qualified Data.Text as Text
+import qualified Data.Text.Lazy as Lazy (Text)
+import qualified Data.Text.Lazy as Text.Lazy
 
 {- | @Projection@ describes a lossless conversion that extracts (projects out) one type from another.
 
@@ -80,3 +84,15 @@ instance Ord key => Projection [(key, value)] (Map key value) where
 instance Ord key => Projection [key] (Set key) where
     project = Set.fromList
     {-# INLINE project #-}
+
+-- | 'Text.pack' is the canonical projection @'String' -> 'Text'@. @project@
+-- performs replacement on invalid scalar values; for details, see "Data.Text".
+instance Projection String Text where
+    project = Text.pack
+    {-# NOINLINE project #-}
+
+-- | 'Text.pack' is the canonical projection @'String' -> 'Text'@. @project@
+-- performs replacement on invalid scalar values; for details, see "Data.Text".
+instance Projection String Lazy.Text where
+    project = Text.Lazy.pack
+    {-# NOINLINE project #-}

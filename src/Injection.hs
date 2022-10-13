@@ -132,17 +132,16 @@ instance Injection Void any where
     inject = \case {}
     {-# INLINE inject #-}
 
--- | 'Text.unpack' is the canonical injection @'Text' -> 'String'@.
--- There is no injection in the other direction because 'String' can represent
--- invalid surrogate code points, but 'Text' cannot; for details, see
--- "Data.Text".
+-- | 'Text.unpack' is the canonical injection @'Text' -> 'String'@. There is no
+-- injection in the other direction because 'String' can represent invalid
+-- Unicode scalar values, but 'Text' cannot; for details, see "Data.Text".
 instance Injection Text String where
     inject = Text.unpack
     {-# INLINE inject #-}
 
 -- | 'Text.Lazy.unpack' is the canonical injection @'Lazy.Text' -> 'String'@.
 -- There is no injection in the other direction because 'String' can represent
--- invalid surrogate code points, but 'Lazy.Text' cannot; for details, see
+-- invalid Unicode scalar values, but 'Lazy.Text' cannot; for details, see
 -- "Data.Text.Lazy".
 instance Injection Lazy.Text String where
     inject = Text.Lazy.unpack
