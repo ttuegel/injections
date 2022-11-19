@@ -1,1 +1,4 @@
 packages: .
+
+ghc-options: -fhide-source-paths
+ghc-options: -fwrite-ide-info -hiedir=.hie
